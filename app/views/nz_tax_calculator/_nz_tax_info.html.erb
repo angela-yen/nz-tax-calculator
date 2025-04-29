@@ -1,0 +1,25 @@
+<div class="overflow-x-auto max-w-2xl mx-auto mb-8">
+  <h2 class="text-xl font-semibold mb-4 text-center">Marginal Tax Brackets</h2>
+  <table class="min-w-full bg-white border rounded-lg shadow text-sm">
+    <thead class="bg-gray-200">
+      <tr>
+        <th class="py-2 px-4 text-left">Income Range</th>
+        <th class="py-2 px-4 text-left">Tax Rate</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% [
+        ["Up to $15,600", "10.5%"],
+        ["$15,601 – $53,500", "17.5%"],
+        ["$53,501 – $78,100", "30%"],
+        ["$78,101 – $180,000", "33%"],
+        ["Over $180,000", "39%"]
+      ].each do |range, rate| %>
+        <tr class="border-t">
+          <td class="py-2 px-4"><%= range %></td>
+          <td class="py-2 px-4"><%= rate %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

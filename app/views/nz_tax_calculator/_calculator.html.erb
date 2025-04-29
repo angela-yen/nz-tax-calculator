@@ -1,0 +1,10 @@
+<div class="bg-white p-6 rounded-lg shadow max-w-md mx-auto">
+  <%= form_with url: calculate_path, method: :post, class: "space-y-4" do %>
+    <div>
+      <%= label_tag :num, "Annual Income", class: "block text-sm font-medium text-gray-700" %>
+      <%= number_field_tag :num, params[:num], step: 0.01, min: 0, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+    </div>
+
+    <%= submit_tag "Calculate", class: "w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded" %>
+  <% end %>
+</div>

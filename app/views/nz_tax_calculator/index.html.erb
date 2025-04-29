@@ -1,0 +1,15 @@
+<h1 class="text-3xl font-bold mb-6 text-center">New Zealand Tax Calculator</h1>
+
+<div class="mb-8">
+  <%= render 'nz_tax_calculator/nz_tax_info' %>
+</div>
+
+<div class="mb-8">
+  <%= render 'nz_tax_calculator/calculator' %>
+</div>
+
+<% if defined?(@result) %>
+  <div class="bg-green-100 text-green-800 font-semibold px-4 py-3 rounded shadow-md max-w-md mx-auto">
+    <p>Result: $<%= @result %></p>
+  </div>
+<% end %>
