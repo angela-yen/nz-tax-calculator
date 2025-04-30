@@ -23,4 +23,9 @@ To install and set up this app, follow these steps:
   `bin/rails server`
 5. 	Open your browser and go to http://localhost:3000 to use the app.
 
-## Test Suit
+## Test Suite
+
+Tests are written using RSpec.
+- To run all tests: `bundle exec rspec`
+- To run specific test: `bundle exec rspec path/to/test_file.rb`
+- To run specific block of tests, specify line number e.g.: `bundle exec rspec path/to/test_file.rb:10`
