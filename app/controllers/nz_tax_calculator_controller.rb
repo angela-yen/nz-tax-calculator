@@ -12,9 +12,10 @@ class NzTaxCalculatorController < ApplicationController
   end
 
   def calculate
-    # require 'byebug'; byebug
     # Takes the value that was input by the user and transforms it into a string.
     annual_income_value = params[:income].to_i
+
+    # This calls the calculate_tax method with the annual income value from the params, then returns 2 values.
     raw_tax, @tax_breakdown = calculate_tax(annual_income_value)
 
     # Ensure that our calculated tax amount is in 2 decimals, as required for monetary standards.
@@ -22,6 +23,35 @@ class NzTaxCalculatorController < ApplicationController
 
     render :index
   end
+
+  #
+  # NOTE: Initial Draft Method (before refactoring)
+  #         def calculate
+  #           p = params[:num].to_i
+  #           set_tier_values
+  #
+  #           @result = case p
+  #             when 0..15600
+  #               p * 0.105
+  #             when 15601..53500
+  #               (p - 15600) * 0.175 + @tier_1
+  #             when 53501..78100
+  #               (p - 53500) * 0.30 + @tier_1 + @tier_2
+  #             when 78101..180000
+  #               (p - 78100) * 0.33 + @tier_1 + @tier_2 + @tier_3
+  #             else
+  #               if p >= 180001
+  #                 (p - 180000) * 0.39 + @tier_1 + @tier_2 + @tier_3 + @tier_4
+  #               else
+  #                 'An error has occurred'
+  #               end
+  #             end
+  #
+  #             @result = format('%.2f', @result)
+  #
+  #             render :index
+  #           end
+  #
 
   private
 
@@ -53,7 +83,7 @@ class NzTaxCalculatorController < ApplicationController
 
       # This creates an array of objects that gives us the required information to populate the breakdown table
       breakdown << {
-        range: "$#{previous_tax_bracket_cap + 1} – $#{cap == Float::INFINITY ? '∞' : cap}",
+        range: "$#{previous_tax_bracket_cap + 1} - $#{cap == Float::INFINITY ? '∞' : cap}",
         rate: rate,
         taxable: taxable,
         tax_paid: tax_paid
@@ -68,4 +98,22 @@ class NzTaxCalculatorController < ApplicationController
     # This will then ouput our final tax amount and the breakdown values to populate our table.
     [tax, breakdown]
   end
+
+  #
+  # Note: Initial sudo code to understand tax bracket.
+  #       When you earn within the bracket, it gets taxed at that rate and any value above the bracket will
+  #       get taxed at the higher bracket. However, this is incremental to the earnings. i.e. if I earned
+  #       $60000, I would get taxed at 10.5% for the first $15600, then 17.5% for next $37899, then at 30% for
+  #       the remainder $6501.
+  #
+
+  #
+  # Note: Initial Draft Method (before refactoring)
+  #       def set_tier_values
+  #         @tier_1 = 15600 * 0.105                     # Tax for first $15,600
+  #         @tier_2 = (53500 - 15600) * 0.175           # Tax for $15,601 - $53,500
+  #         @tier_3 = (78100 - 53500) * 0.30            # Tax for $53,501 - $78,100
+  #         @tier_4 = (180000 - 78100) * 0.33           # Tax for $78,101 - $180,000
+  #       end
+  #
 end

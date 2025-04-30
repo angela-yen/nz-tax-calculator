@@ -29,3 +29,30 @@ Tests are written using RSpec.
 - To run all tests: `bundle exec rspec`
 - To run specific test: `bundle exec rspec path/to/test_file.rb`
 - To run specific block of tests, specify line number e.g.: `bundle exec rspec path/to/test_file.rb:10`
+
+
+## Development Process
+1. Researched and made notes on current Tax calculate (pros & cons)
+    - Pros:
+      -- Printable
+      -- Simple to use
+      -- Specific criterias to match what the user needs
+      -- Breakdown table
+    - Cons:
+      -- Too word
+      -- Multiple pages, needing to go back and forwards between pages
+    Cons:
+2. Wrote out the expected requrirements:
+    - Targeted users: Leads and Support Teams (internal tool)
+    - Calculate the correct tax amount
+    - Simple and user friendly
+    - Test cases
+3. Created a boiler plate RoR app
+4. Created basic controller, views and routes to load the app
+5. Wrote some sudo code to help understand how the tax is calculated
+6. Wrote out initial logic into the code
+7. Tested the code to ensure the calculated values were correct
+8. Refactored the calculation methods to be more efficient and clean (DRY). Also refactored views out to seperate partitions. 
+9. Added basic Tailwind CSS to make the UI more readible
+10. Added Tax breakdown (not required, but it helped with understanding how the tax brackets worked)
+11. Wrote RSpec Unit tests to ensure we covered the test cases and code is working as required
