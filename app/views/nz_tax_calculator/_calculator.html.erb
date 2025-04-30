@@ -1,8 +1,16 @@
+<h3 class="text-xl font-semibold mb-4 text-center">Tax Calculator</h2>
+
+<div class="space-y-4 mt-4 text-center text-sm text-gray-600">
+  <p>Enter the client's total annual income (up to 2 decimal places) and click <strong>Calculate</strong> to see the estimated tax.</p><br>
+</div>
+
 <div class="bg-white p-6 rounded-lg shadow max-w-md mx-auto">
   <%= form_with url: calculate_path, method: :post, class: "space-y-4" do %>
     <div>
-      <%= label_tag :num, "Annual Income", class: "block text-sm font-medium text-gray-700" %>
-      <%= number_field_tag :num, params[:num], step: 0.01, min: 0, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+      <%= label_tag :income, "Annual Income", class: "block text-sm font-medium text-gray-700" %>
+      <%# Here I specify the minimum value as 0, meaning no negative values can be entered %>
+      <%# I also limit the values to 2 decimal places, as monetary value can only be up to 2 decimal places %>
+      <%= number_field_tag :income, params[:income], step: 0.01, min: 0, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
     </div>
 
     <%= submit_tag "Calculate", class: "w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded" %>

@@ -8,8 +8,12 @@
   <%= render 'nz_tax_calculator/calculator' %>
 </div>
 
-<% if defined?(@result) %>
-  <div class="bg-green-100 text-green-800 font-semibold px-4 py-3 rounded shadow-md max-w-md mx-auto">
-    <p>Result: $<%= @result %></p>
+<% if defined?(@tax_amount) %>
+  <div class="bg-green-100 text-green-800 font-semibold px-4 py-3 rounded shadow-md max-w-md mx-auto mb-6">
+    <p>Tax Amount: $<%= @tax_amount %></p>
   </div>
+<% end %>
+
+<% if defined?(@tax_breakdown) && @tax_breakdown.any? %>
+   <%= render 'nz_tax_calculator/tax_breakdown' %>
 <% end %>

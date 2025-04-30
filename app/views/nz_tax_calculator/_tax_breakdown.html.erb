@@ -1,0 +1,27 @@
+<div class="bg-green-50 text-green-900 px-4 py-4 rounded shadow-md max-w-md mx-auto">
+  <h3 class="text-lg font-semibold mb-4 text-center">Tax Breakdown</h3>
+  <table class="min-w-full text-sm">
+    <thead class="bg-green-100 text-green-800 font-semibold">
+      <tr>
+        <th class="py-2 px-3 text-left">Bracket</th>
+        <th class="py-2 px-3 text-left">Rate</th>
+        <th class="py-2 px-3 text-left">Taxable</th>
+        <th class="py-2 px-3 text-left">Tax Paid</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @tax_breakdown.each do |bracket| %>
+        <tr class="border-t border-green-200">
+          <td class="py-2 px-3"><%= bracket[:range] %></td>
+          <td class="py-2 px-3"><%= bracket[:rate] %></td>
+          <td class="py-2 px-3">$<%= '%.2f' % bracket[:taxable] %></td>
+          <td class="py-2 px-3">$<%= '%.2f' % bracket[:tax_paid] %></td>
+        </tr>
+      <% end %>
+      <tr class="border-t-2 border-green-300 font-semibold bg-green-100">
+        <td colspan="3" class="py-2 px-3 text-right">Total Tax:</td>
+        <td class="py-2 px-3">$<%= @tax_amount %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

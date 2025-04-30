@@ -1,29 +1,23 @@
 class NzTaxCalculatorController < ApplicationController
+  # Defining the tax brackets and rates as a constant array of objects
+  TAX_BRACKETS = [
+    { max_income: 15600, rate: 0.105 },
+    { max_income: 53500, rate: 0.175 },
+    { max_income: 78100, rate: 0.30 },
+    { max_income: 180000, rate: 0.33 },
+    { max_income: Float::INFINITY, rate: 0.39 }
+  ].freeze #adding .freeze to make brackets immutable
+
   def index
   end
 
   def calculate
-    p = params[:num].to_i
-    set_tier_values
+    # Takes the value that was input by the user and transforms it into a string.
+    annual_income_value = params[:income].to_i
+    raw_tax, @tax_breakdown = calculate_tax(annual_income_value)
 
-    @result = case p
-              when 0..15600
-                p * 0.105
-              when 15601..53500
-                (p - 15600) * 0.175 + @tier_1
-              when 53501..78100
-                (p - 53500) * 0.30 + @tier_1 + @tier_2
-              when 78101..180000
-                (p - 78100) * 0.33 + @tier_1 + @tier_2 + @tier_3
-              else
-                if p >= 180001
-                  (p - 180000) * 0.39 + @tier_1 + @tier_2 + @tier_3 + @tier_4
-                else
-                  'An error has occurred'
-                end
-              end
-
-    @result = format('%.2f', @result)
+    # Ensure that our calculated tax amount is in 2 decimals, as required for monetary standards.
+    @tax_amount = format('%.2f', raw_tax)
 
     render :index
   end
@@ -31,26 +25,44 @@ class NzTaxCalculatorController < ApplicationController
   private
 
   def calculate_tax(income)
-    total_tax = 0
-    previous_limit = 0
+    # Initial tax
+    tax = 0
+    # Initial tax bracket
+    previous_tax_bracket_cap = 0
 
+    breakdown = []
+
+    # We loop through each tax bracket defined above
     TAX_BRACKETS.each do |bracket|
-      if income > previous_limit
-        taxable_income = [income - previous_limit, bracket[:max_income] - previous_limit].min
-        total_tax += taxable_income * bracket[:rate]
-        previous_limit = bracket[:max_income]
-      else
-        break
-      end
+      # Break out of loop if the income is less than the previous tax bracket cap.
+      # As this means we have the correct tax calculated for the cap
+      break if income <= previous_tax_bracket_cap
+
+      # Maximum for the tax bracket
+      cap = bracket[:max_income]
+      # Tax rate for the tax bracket
+      rate = bracket[:rate]
+      # We take the minimum between the income and the maximum of income for the tax bracket.
+      # This means we only tax income up the maximum of the tax bracket, and exclude values above this (as this will be taxed at the next tax bracket rate).
+      # Then we minus the previous tax bracket cap as th value has already been calculated
+      taxable = [income, cap].min - previous_tax_bracket_cap
+
+      # We now calculate the total tax for the amount that is taxable (for the tax bracket), and add to previously calculated tax (inital 0)
+      tax_paid = taxable * rate
+
+      breakdown << {
+        range: "$#{previous_tax_bracket_cap + 1} – $#{cap == Float::INFINITY ? '∞' : cap}",
+        rate: rate,
+        taxable: taxable,
+        tax_paid: tax_paid
+      }
+
+      tax += tax_paid
+      # Now we set the maximum of this tax bracket as the cap and loop again if required.
+      previous_tax_bracket_cap = cap
     end
 
-    total_tax
-  end
-
-  def set_tier_values
-    @tier_1 = 15600 * 0.105                     # Tax for first $15,600
-    @tier_2 = (53500 - 15600) * 0.175           # Tax for $15,601 - $53,500
-    @tier_3 = (78100 - 53500) * 0.30            # Tax for $53,501 - $78,100
-    @tier_4 = (180000 - 78100) * 0.33            # Tax for $78,101 - $180,000
+    # This will then ouput our final tax amount
+    [tax, breakdown]
   end
 end
