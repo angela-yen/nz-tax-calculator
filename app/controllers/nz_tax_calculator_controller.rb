@@ -12,6 +12,7 @@ class NzTaxCalculatorController < ApplicationController
   end
 
   def calculate
+    # require 'byebug'; byebug
     # Takes the value that was input by the user and transforms it into a string.
     annual_income_value = params[:income].to_i
     raw_tax, @tax_breakdown = calculate_tax(annual_income_value)
@@ -29,7 +30,7 @@ class NzTaxCalculatorController < ApplicationController
     tax = 0
     # Initial tax bracket
     previous_tax_bracket_cap = 0
-
+    # Initial tax breakdown
     breakdown = []
 
     # We loop through each tax bracket defined above
@@ -47,9 +48,10 @@ class NzTaxCalculatorController < ApplicationController
       # Then we minus the previous tax bracket cap as th value has already been calculated
       taxable = [income, cap].min - previous_tax_bracket_cap
 
-      # We now calculate the total tax for the amount that is taxable (for the tax bracket), and add to previously calculated tax (inital 0)
+      # We now calculate the total tax for the amount that is taxable (for the tax bracket)
       tax_paid = taxable * rate
 
+      # This creates an array of objects that gives us the required information to populate the breakdown table
       breakdown << {
         range: "$#{previous_tax_bracket_cap + 1} – $#{cap == Float::INFINITY ? '∞' : cap}",
         rate: rate,
@@ -57,12 +59,13 @@ class NzTaxCalculatorController < ApplicationController
         tax_paid: tax_paid
       }
 
+      # We now add to previously calculated tax to get the total amount of tax (inital 0)
       tax += tax_paid
       # Now we set the maximum of this tax bracket as the cap and loop again if required.
       previous_tax_bracket_cap = cap
     end
 
-    # This will then ouput our final tax amount
+    # This will then ouput our final tax amount and the breakdown values to populate our table.
     [tax, breakdown]
   end
 end
