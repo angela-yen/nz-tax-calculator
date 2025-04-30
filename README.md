@@ -2,18 +2,25 @@
 
 This app is designed as a simple yet effective New Zealand tax calculator, helping users estimate their tax amount based on their annual income.
 
-* Ruby version
-3.0.0
-* Rails version
-7.0.3
+## Prerequisites
 
-* Setup
+Before running the app, ensure that you have the following software installed:
 
-To install and use this app:
-1. git clone https://github.com/angela-yen/nz-tax-calculator.git
-2. cd nz-tax-calculator
-3. bundle install
-4. bin/rails server
+- **Ruby version**: 3.0.0
+- **Rails version**: 7.0.3
 
-* How to run the test suite
+## Setup
 
+To install and set up this app, follow these steps:
+
+1. Clone the repository to your local machine:
+  `git clone https://github.com/angela-yen/nz-tax-calculator.git`
+2. Navigate into the project directory:
+  `cd nz-tax-calculator`
+3. Install the required Ruby gems using Bundler:
+  `bundle install`
+4.	Start the Rails server:
+  `bin/rails server`
+5. 	Open your browser and go to http://localhost:3000 to use the app.
+
+## Test Suit
